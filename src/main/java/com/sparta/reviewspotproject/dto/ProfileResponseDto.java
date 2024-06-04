@@ -1,18 +1,28 @@
 package com.sparta.reviewspotproject.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@NoArgsConstructor
+@Setter
 @Getter
 public class ProfileResponseDto {
+    private String userId;
     private String username;
     private String email;
     private String tagline;
 
-    public ProfileResponseDto(String username, String email, String tagline) {
-        this.username = username;
-        this.email = email;
-        this.tagline = tagline;
+        public ProfileResponseDto(User user) {
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.tagline = user.getTagline();
     }
+
+    public ProfileResponseDto(User user) {
+        this.userId = user.getUserId();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.tagline = user.getTagline();
+    }
+
+
 }
