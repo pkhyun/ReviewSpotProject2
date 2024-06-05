@@ -61,6 +61,6 @@ public class User {
     public void update(ProfileRequestDto requestDto) {
         this.userName = requestDto.getUserName();
         this.email = requestDto.getEmail();
-        this.tagLine = requestDto.getTagline();
+        this.tagLine = requestDto.getTagLine();
     }
 }
