@@ -1,5 +1,6 @@
 package com.sparta.reviewspotproject.dto;
 
+import com.sparta.reviewspotproject.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,18 +12,11 @@ public class ProfileResponseDto {
     private String email;
     private String tagline;
 
-    //    public ProfileResponseDto(User user) {
-//        this.username = user.getUsername();
-//        this.email = user.getEmail();
-//        this.tagline = user.getTagline();
-//    }
-
-//    public ProfileResponseDto(User user) {
-//        this.userId = user.getUserId();
-//        this.username = user.getUsername();
-//        this.email = user.getEmail();
-//        this.tagline = user.getTagline();
-//    }
-
+    public ProfileResponseDto(User user) {
+        this.userId = user.getUserId();
+        this.username = user.getUserName();
+        this.email = user.getEmail();
+        this.tagline = user.getTagLine();
+    }
 
 }
