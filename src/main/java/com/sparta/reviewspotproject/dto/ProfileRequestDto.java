@@ -9,7 +9,7 @@ import lombok.Setter;
 public class ProfileRequestDto {
 
     @NotBlank
-    private String username;
+    private String userName;
     @NotBlank
     private String email;
     @NotBlank
