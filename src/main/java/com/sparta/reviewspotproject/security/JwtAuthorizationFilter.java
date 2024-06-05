@@ -34,19 +34,22 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String tokenValue = jwtUtil.getJwtFromHeader(req);
 
         if (StringUtils.hasText(tokenValue)) {
+            String refreshToken = jwtUtil.getRefreshTokenFromCookie(req);
+            Claims refreshTokenInfo = jwtUtil.getUserInfoFromToken(refreshToken);
+            String username = refreshTokenInfo.getSubject();
+
+            if (!refreshToken.equals(userDetailsService.getRefreshToken(username))) {
+                throw new IllegalArgumentException("재로그인이 필요합니다.");
+            }
 
             if (!jwtUtil.validateAccessToken(tokenValue)) {
                 // 토큰이 만료된 경우 리프레시 토큰을 사용하여 새로운 액세스 토큰을 발급
-                String refreshToken = jwtUtil.getRefreshTokenFromCookie(req);
-                if (StringUtils.hasText(refreshToken)) {
-                    Claims refreshTokenInfo = jwtUtil.getUserInfoFromToken(refreshToken);
-                    String username = refreshTokenInfo.getSubject();
-                    if (StringUtils.hasText(username) && refreshTokenInfo.toString().equals(userDetailsService.getRefreshToken(username))) {
-                        String newAccessToken = jwtUtil.createToken(username);
-                        res.addHeader(JwtUtil.AUTHORIZATION_HEADER, newAccessToken); // 새로운 액세스 토큰을 헤더에 추가
-                        log.info("새로 발행한 액세스 토큰: {}", newAccessToken);
-                    }
-                }
+
+                String newAccessToken = jwtUtil.createToken(username);
+                res.addHeader(JwtUtil.AUTHORIZATION_HEADER, newAccessToken); // 새로운 액세스 토큰을 헤더에 추가
+                log.info("새로 발행한 액세스 토큰: {}", newAccessToken);
+
+
             } else {
                 Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
                 try {
