@@ -8,13 +8,13 @@ import lombok.Setter;
 @Getter
 public class ProfileResponseDto {
     private String userId;
-    private String username;
+    private String userName;
     private String email;
     private String tagline;
 
     public ProfileResponseDto(User user) {
         this.userId = user.getUserId();
-        this.username = user.getUserName();
+        this.userName = user.getUserName();
         this.email = user.getEmail();
         this.tagline = user.getTagLine();
     }

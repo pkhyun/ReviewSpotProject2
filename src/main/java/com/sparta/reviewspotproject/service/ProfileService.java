@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
@@ -17,38 +19,47 @@ public class ProfileService {
     private final PasswordEncoder passwordEncoder;
 
     // 사용자 프로필 조회
-    public ProfileResponseDto getProfile(Long userId) {
-        User user = findById(userId);
-//        return new ProfileResponseDto(user.getUserName(),user.getEmail(),user.getTagLine());
-        return null;
-    }
-
-    // 사용자 비밀번호 확인 (본인확인)
-    public void checkPassword(Long userId, ProfileRequestDto requestDto) {
-        User user = findById(userId);
-        String inputPassword = passwordEncoder.encode(requestDto.getPassword());
-        if (!passwordEncoder.matches(inputPassword, user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+    public ProfileResponseDto getProfile(Long id) {
+        User user = findById(id);
+        ProfileResponseDto responseDto = new ProfileResponseDto(user);
+        return responseDto;
     }
 
     // 사용자 프로필 수정
     @Transactional
-    public void updateProfile(Long userId, ProfileRequestDto requestDto) {
-        User user = findById(userId);
+    public void updateProfile(Long id, ProfileRequestDto requestDto) {
+        User user = findById(id);
+        String password = requestDto.getPassword();
         String changePassword = requestDto.getChangePassword();
 
-        // 변경하려는 비밀번호와 현재 비밀번호 확인
-        if (passwordEncoder.matches(changePassword, user.getPassword())) {
-            throw new IllegalArgumentException("동일한 패스워드로 변경은 불가능합니다.");
+        // 현재 비밀번호가 사용자의 비밀번호와 맞는지 검증
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호와 사용자의 비밀번호가 일치하지 않습니다.");
+        }
+
+        // 변경할 비밀번호와 현재 비밀번호가 동일한지 검증
+        if (!passwordEncoder.matches(changePassword, user.getPassword())) {
+        // 변경할 비밀번호로 수정
+            user.setPassword(passwordEncoder.encode(changePassword));
+        } else {
+            throw new IllegalArgumentException("동일한 비밀번호로는 변경할 수 없습니다.");
         }
         user.update(requestDto);
     }
 
-
-    private User findById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() ->
+    private User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 사용자는 존재하지 않습니다.")
         );
     }
+
+    // 사용자 비밀번호 확인 (본인확인)
+//    @Transactional
+//    public void checkPassword(Long id, ProfileRequestDto requestDto) {
+//        User user = findById(id);
+//        String inputPassword = passwordEncoder.encode(requestDto.getPassword());
+//        if (!passwordEncoder.matches(inputPassword, user.getPassword())) {
+//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+//        }
+//    }
 }
