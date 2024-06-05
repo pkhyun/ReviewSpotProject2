@@ -1,5 +1,6 @@
 package com.sparta.reviewspotproject.entity;
 
+import com.sparta.reviewspotproject.dto.ProfileRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
@@ -52,5 +53,11 @@ public class User {
         this.password = password;
         this.userName = userName;
         this.email = email;
+    }
+
+    public void update(ProfileRequestDto requestDto) {
+        this.userName = requestDto.getUsername();
+        this.email = requestDto.getEmail();
+        this.tagLine = requestDto.getTagline();
     }
 }
