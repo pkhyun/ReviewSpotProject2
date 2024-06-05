@@ -41,7 +41,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 if (StringUtils.hasText(refreshToken)) {
                     Claims refreshTokenInfo = jwtUtil.getUserInfoFromToken(refreshToken);
                     String username = refreshTokenInfo.getSubject();
-                    if (StringUtils.hasText(username)) {
+                    if (StringUtils.hasText(username) && refreshTokenInfo.toString().equals(userDetailsService.getRefreshToken(username))) {
                         String newAccessToken = jwtUtil.createToken(username);
                         res.addHeader(JwtUtil.AUTHORIZATION_HEADER, newAccessToken); // 새로운 액세스 토큰을 헤더에 추가
                         log.info("새로 발행한 액세스 토큰: {}", newAccessToken);
