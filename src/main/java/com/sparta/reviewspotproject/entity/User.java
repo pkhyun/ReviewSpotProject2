@@ -20,7 +20,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(nullable = false, length = 20, unique = true)
     private String userId;
@@ -37,6 +37,9 @@ public class User {
 
     @Column
     private String tagLine;
+
+    @Column
+    private String refreshToken;
 
     @CreatedDate
     @Column(updatable = false)
@@ -56,7 +59,7 @@ public class User {
     }
 
     public void update(ProfileRequestDto requestDto) {
-        this.userName = requestDto.getUsername();
+        this.userName = requestDto.getUserName();
         this.email = requestDto.getEmail();
         this.tagLine = requestDto.getTagLine();
     }
