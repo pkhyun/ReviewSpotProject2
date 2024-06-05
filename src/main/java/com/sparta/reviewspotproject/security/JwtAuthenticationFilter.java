@@ -2,12 +2,15 @@ package com.sparta.reviewspotproject.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.reviewspotproject.dto.LoginRequestDto;
+import com.sparta.reviewspotproject.entity.User;
+import com.sparta.reviewspotproject.entity.UserStatus;
 import com.sparta.reviewspotproject.jwt.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -32,6 +35,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
+
+            // 사용자의 상태를 확인하고, NON_MEMBER 상태인 경우 로그인을 허용하지 않음
+            User user = userDetailsService.findByUserId(requestDto.getUserId());
+            if (user != null && user.getUserStatus() == UserStatus.NON_MEMBER) {
+                unsuccessfulAuthentication(request, response, new BadCredentialsException("탈퇴한 회원입니다."));
+                return null;
+            }
 
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -80,7 +90,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         try {
-            response.getWriter().write("{\"message\": \"로그인에 실패하였습니다.\"}");
+            if (failed instanceof BadCredentialsException) {
+                response.getWriter().write("{\"message\": \"탈퇴한 회원입니다.\"}");
+            }else {
+                response.getWriter().write("{\"message\": \"로그인에 실패하였습니다.\"}");
+            }
         } catch (IOException e) {
             log.error("Error writing to response: {}", e.getMessage());
         }

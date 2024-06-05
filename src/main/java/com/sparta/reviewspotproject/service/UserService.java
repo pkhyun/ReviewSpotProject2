@@ -3,6 +3,7 @@ package com.sparta.reviewspotproject.service;
 import com.sparta.reviewspotproject.dto.LoginRequestDto;
 import com.sparta.reviewspotproject.dto.SignupRequestDto;
 import com.sparta.reviewspotproject.entity.User;
+import com.sparta.reviewspotproject.entity.UserStatus;
 import com.sparta.reviewspotproject.jwt.JwtUtil;
 import com.sparta.reviewspotproject.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -20,13 +21,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
 
     // 회원가입
     public void signup(SignupRequestDto requestDto) {
         String userId = requestDto.getUserId();
         String password = passwordEncoder.encode(requestDto.getPassword());
         String userName = requestDto.getUserName();
+        UserStatus userStatus = UserStatus.MEMBER;
 
         // 회원 중복 확인
         Optional<User> checkUsername = userRepository.findByUserId(userId);
@@ -42,23 +43,21 @@ public class UserService {
         }
 
         // 사용자 등록
-        User user = new User(userId, password, userName, email);
+        User user = new User(userId, password, userName, email,userStatus);
         userRepository.save(user);
     }
 
-    public void setNullRefreshToken(HttpServletRequest request) {
-        String tokenValue = jwtUtil.getJwtFromHeader(request);
-        Claims claims = jwtUtil.getUserInfoFromToken(tokenValue);
-        String userId = claims.getSubject();
-        User user = userRepository.findByUserId(userId).orElseThrow(()->
-                new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    // 로그아웃
+    @Transactional
+    public void setNullRefreshToken(User user) {
         user.setRefreshToken(null);
         userRepository.save(user);
     }
 
 
-
-
-    public void login(LoginRequestDto requestDto) {
+    // 회원 탈퇴
+    public void setUserStatus(User user) {
+        user.setUserStatus(UserStatus.NON_MEMBER);
+        userRepository.save(user);
     }
 }

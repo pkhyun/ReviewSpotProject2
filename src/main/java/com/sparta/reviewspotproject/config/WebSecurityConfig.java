@@ -64,7 +64,6 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
-//                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/").permitAll() // 메인 페이지 요청 허가
                         .requestMatchers("/api/user/**").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
                         .requestMatchers(HttpMethod.GET, "/api/schedule/**").permitAll() // 조회 페이지 모든 접근 허가
@@ -73,19 +72,6 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
-//        http.formLogin((formLogin) -> //인증이 필요한 페이지에 접근시 로그인페이지 리다이랙션
-//                formLogin
-//                        .loginPage("/api/user/login").permitAll()
-//        );
-
-        http.logout((logout) ->
-                logout
-                        .logoutUrl("/api/user/logout") // 로그아웃 url
-                        .logoutSuccessUrl("/") // 로그아웃 성공시 리다이렉션할 URL
-                        .invalidateHttpSession(true) // 로그아웃 성공시 http 세션 무효화
-                        .deleteCookies("refreshToken") // 쿠키 삭제
-                        .permitAll()
-        );
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);

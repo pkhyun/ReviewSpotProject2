@@ -3,6 +3,7 @@ package com.sparta.reviewspotproject.controller;
 import com.sparta.reviewspotproject.dto.LoginRequestDto;
 import com.sparta.reviewspotproject.dto.SignupRequestDto;
 import com.sparta.reviewspotproject.entity.User;
+import com.sparta.reviewspotproject.jwt.JwtUtil;
 import com.sparta.reviewspotproject.security.UserDetailsImpl;
 import com.sparta.reviewspotproject.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.util.List;
 
 @Slf4j
@@ -27,7 +29,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
+    private final JwtUtil jwtUtil;
 
     // 회원 가입
     @PostMapping("/signup")
@@ -45,17 +47,21 @@ public class UserController {
         return ResponseEntity.ok("회원가입이 성공적으로 완료되었습니다.");
     }
 
-
     // 로그아웃
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request , @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        // 현재 인증된 사용자 세션 무효화
-        SecurityContextHolder.clearContext();
-        userService.setNullRefreshToken(request);
+    public ResponseEntity<String> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        userService.setNullRefreshToken(user);
         return ResponseEntity.ok("로그아웃 되었습니다.");
     }
 
-
+    // 회원 탈퇴
+    @PostMapping("/delete")
+    public ResponseEntity<String> delete(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        userService.setUserStatus(user);
+        return ResponseEntity.ok("성공적으로 탈퇴 되었습니다.");
+    }
 
     @ExceptionHandler // 에러 핸들링
     private ResponseEntity<String> handleException(IllegalArgumentException e) {

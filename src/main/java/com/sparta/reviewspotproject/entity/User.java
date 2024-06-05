@@ -41,6 +41,10 @@ public class User {
     @Column
     private String refreshToken;
 
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserStatus userStatus;
+
     @CreatedDate
     @Column(updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -51,11 +55,12 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime modifiedAt = LocalDateTime.now();
 
-    public User(String userId, String password, String userName, String email) {
+    public User(String userId, String password, String userName, String email, UserStatus userStatus) {
         this.userId = userId;
         this.password = password;
         this.userName = userName;
         this.email = email;
+        this.userStatus = userStatus;
     }
 
     public void update(ProfileRequestDto requestDto) {
