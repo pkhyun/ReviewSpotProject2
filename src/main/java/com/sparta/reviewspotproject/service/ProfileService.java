@@ -27,24 +27,24 @@ public class ProfileService {
 
     // 사용자 프로필 수정
     @Transactional
-    public void updateProfile(Long id, ProfileRequestDto requestDto) {
-        User user = findById(id);
+    public void updateProfile(ProfileRequestDto requestDto, User user) {
+        User currentUser = findById(user.getId());
         String password = requestDto.getPassword();
         String changePassword = requestDto.getChangePassword();
 
         // 현재 비밀번호가 사용자의 비밀번호와 맞는지 검증
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, currentUser.getPassword())) {
             throw new IllegalArgumentException("현재 비밀번호와 사용자의 비밀번호가 일치하지 않습니다.");
         }
 
         // 변경할 비밀번호와 현재 비밀번호가 동일한지 검증
-        if (!passwordEncoder.matches(changePassword, user.getPassword())) {
-        // 변경할 비밀번호로 수정
-            user.setPassword(passwordEncoder.encode(changePassword));
-        } else {
+        if (passwordEncoder.matches(changePassword, currentUser.getPassword())) {
             throw new IllegalArgumentException("동일한 비밀번호로는 변경할 수 없습니다.");
         }
-        user.update(requestDto);
+        // 변경할 비밀번호로 수정
+        currentUser.setPassword(passwordEncoder.encode(changePassword));
+        currentUser.update(requestDto);
+        userRepository.save(currentUser);
     }
 
     private User findById(Long id) {
