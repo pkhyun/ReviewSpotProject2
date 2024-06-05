@@ -28,7 +28,6 @@ public class UserController {
 
     private final UserService userService;
 
-
     // 회원 가입
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
