@@ -32,9 +32,9 @@ public class ProfileController {
         return new ResponseEntity<>("프로필이 성공적으로 수정되었습니다.", HttpStatus.OK);
     }
 
-//    // 사용자의 비밀번호 확인(본인확인)
-//    @PostMapping("/{id}")
-//    public ResponseEntity<String> checkPassword(@PathVariable Long id, @RequestBody @Valid ProfileRequestDto requestDto) {
+    // 사용자의 비밀번호 확인(본인확인)
+//    @PostMapping("/profile")
+//    public ResponseEntity<String> checkPassword(@RequestBody @Valid ProfileRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 //        return new ResponseEntity<>("사용자 확인이 완료되었습니다.", HttpStatus.OK);
 //    }
 }

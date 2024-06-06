@@ -52,8 +52,8 @@ public class ProfileService {
 
     // 사용자 비밀번호 확인 (본인확인)
 //    @Transactional
-//    public void checkPassword(Long id, ProfileRequestDto requestDto) {
-//        User user = findById(id);
+//    public void checkPassword(ProfileRequestDto requestDto, User user) {
+//        User currentUser = findById(user);
 //        String inputPassword = passwordEncoder.encode(requestDto.getPassword());
 //        if (!passwordEncoder.matches(inputPassword, user.getPassword())) {
 //            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
