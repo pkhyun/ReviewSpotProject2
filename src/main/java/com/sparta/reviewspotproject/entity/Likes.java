@@ -32,9 +32,10 @@ public class Likes extends Timestamped {
     @Enumerated(EnumType.STRING)
     private ContentType contentType;
 
-    public Likes(Post post, User user) {
+    public Likes(Post post, User user, ContentType contentType) {
         this.post = post;
         this.user = user;
+        this.contentType = contentType;
     }
 
 
