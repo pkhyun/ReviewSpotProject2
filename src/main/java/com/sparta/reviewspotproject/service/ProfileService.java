@@ -4,12 +4,10 @@ import com.sparta.reviewspotproject.dto.ProfileRequestDto;
 import com.sparta.reviewspotproject.dto.ProfileResponseDto;
 import com.sparta.reviewspotproject.entity.User;
 import com.sparta.reviewspotproject.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,16 +17,16 @@ public class ProfileService {
     private final PasswordEncoder passwordEncoder;
 
     // 사용자 프로필 조회
-    public ProfileResponseDto getProfile(Long id) {
-        User user = findById(id);
+    public ProfileResponseDto getProfile(User user) {
+        User currentUser = findById(user);
         ProfileResponseDto responseDto = new ProfileResponseDto(user);
         return responseDto;
     }
 
     // 사용자 프로필 수정
     @Transactional
-    public void updateProfile(ProfileRequestDto requestDto, User user) {
-        User currentUser = findById(user.getId());
+    public void updateProfile (ProfileRequestDto requestDto, User user) {
+        User currentUser = findById(user);
         String password = requestDto.getPassword();
         String changePassword = requestDto.getChangePassword();
 
@@ -44,11 +42,10 @@ public class ProfileService {
         // 변경할 비밀번호로 수정
         currentUser.setPassword(passwordEncoder.encode(changePassword));
         currentUser.update(requestDto);
-        userRepository.save(currentUser);
     }
 
-    private User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() ->
+    private User findById(User user) {
+        return userRepository.findById(user.getId()).orElseThrow(() ->
                 new IllegalArgumentException("해당 사용자는 존재하지 않습니다.")
         );
     }

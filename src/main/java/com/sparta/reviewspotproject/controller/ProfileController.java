@@ -2,7 +2,6 @@ package com.sparta.reviewspotproject.controller;
 
 import com.sparta.reviewspotproject.dto.ProfileRequestDto;
 import com.sparta.reviewspotproject.dto.ProfileResponseDto;
-import com.sparta.reviewspotproject.entity.User;
 import com.sparta.reviewspotproject.security.UserDetailsImpl;
 import com.sparta.reviewspotproject.service.ProfileService;
 import jakarta.validation.Valid;
@@ -20,9 +19,9 @@ public class ProfileController {
     private final ProfileService profileService;
 
     // 사용자의 프로필 조회
-    @GetMapping("/user/{id}")
-    public ResponseEntity<ProfileResponseDto> getProfile(@PathVariable Long id) {
-        ProfileResponseDto responseDto = profileService.getProfile(id);
+    @GetMapping("/profile")
+    public ResponseEntity<ProfileResponseDto> getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        ProfileResponseDto responseDto = profileService.getProfile(userDetails.getUser());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
