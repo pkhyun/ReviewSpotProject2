@@ -4,6 +4,7 @@ import com.sparta.reviewspotproject.dto.LikesResponseDto;
 import com.sparta.reviewspotproject.security.UserDetailsImpl;
 import com.sparta.reviewspotproject.service.LikesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +16,18 @@ public class LikesController {
 
     private final LikesService likesService;
 
-    @PostMapping("/{postId}/likes")
-    public ResponseEntity<LikesResponseDto> likePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PostMapping("/post/{postId}/likes")
+    public ResponseEntity<Object> likePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Integer likesCount = likesService.likePost(postId,userDetails.getUser());
-        LikesResponseDto responseDto = new LikesResponseDto(postId,likesCount);
-        return ResponseEntity.ok(responseDto);
+        LikesResponseDto responseDto = new LikesResponseDto(postId,likesCount,"게시물에 좋아요를 등록했습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
-    @DeleteMapping("/{postId}/unlikes")
+    @DeleteMapping("/post/{postId}/unlikes")
     public ResponseEntity<LikesResponseDto> unlikePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Integer likesCount = likesService.unlikePost(postId,userDetails.getUser());
-        LikesResponseDto responseDto = new LikesResponseDto(postId,likesCount);
-        return ResponseEntity.ok(responseDto);
+        LikesResponseDto responseDto = new LikesResponseDto(postId,likesCount,"게시물에 좋아요를 취소했습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
 }
