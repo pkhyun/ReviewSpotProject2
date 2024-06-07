@@ -12,6 +12,7 @@ public class ProfileResponseDto {
     private String email;
     private String tagline;
 
+
     public ProfileResponseDto(User user) {
         this.userId = user.getUserId();
         this.userName = user.getUserName();
