@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
         setFilterProcessesUrl("/api/user/login");
-    } // /auth
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
