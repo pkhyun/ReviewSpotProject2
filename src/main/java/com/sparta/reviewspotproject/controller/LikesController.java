@@ -19,7 +19,7 @@ public class LikesController {
     // 게시물의 좋아요
     @PostMapping("/post/{postId}/likes")
     public ResponseEntity<LikesResponseDto> likePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Integer likesCount = likesService.likePost(postId,userDetails.getUser());
+        int likesCount = likesService.likePost(postId,userDetails.getUser());
         LikesResponseDto responseDto = new LikesResponseDto(postId,likesCount,"게시물에 좋아요를 등록했습니다.");
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
@@ -27,7 +27,7 @@ public class LikesController {
     // 게시물의 좋아요 취소
     @DeleteMapping("/post/{postId}/unlikes")
     public ResponseEntity<LikesResponseDto> unlikePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Integer likesCount = likesService.unlikePost(postId,userDetails.getUser());
+        int likesCount = likesService.unlikePost(postId,userDetails.getUser());
         LikesResponseDto responseDto = new LikesResponseDto(postId,likesCount,"게시물에 좋아요를 취소했습니다.");
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }

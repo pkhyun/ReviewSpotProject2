@@ -25,15 +25,16 @@ public class SignupRequestDto {
     )
     private String password;
 
-    @Email
+    @NotBlank(message = "이름을 입력해주세요")
+    private String userName;
+
+    @Email(message = "유효한 이메일을 입력해주세요.")
     @NotBlank(message = "Email을 입력해주세요.")
     private String email;
 
     @NotNull(message = "Email로 발송된 인증번호를 입력해주세요.")
     private String certificationNumber;
 
-    @NotBlank(message = "이름을 입력해주세요")
-    private String userName;
 
 }
 

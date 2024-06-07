@@ -4,6 +4,7 @@ import com.sparta.reviewspotproject.dto.SignupRequestDto;
 import com.sparta.reviewspotproject.entity.User;
 import com.sparta.reviewspotproject.entity.UserStatus;
 import com.sparta.reviewspotproject.repository.UserRepository;
+import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -36,20 +37,20 @@ public class UserService {
     }
 
     // 이메일 생성
-    public MimeMessage createMail(String mail, String number) throws MessagingException {
+    public MimeMessage createMail(String email, String number) throws MessagingException {
         createNumber();
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
         try {
             helper.setFrom(senderEmail);
-            helper.setTo(mail);
+            helper.setTo(email);
             helper.setSubject("ReviewSpot [회원가입을 위한 이메일 인증]");
             String body = "";
             body += "<h3>" + "이메일 인증 번호" + "</h3>";
             body += "<h1>" + number + "</h1>";
             body += "<h3>" + "위 인증번호를 입력해주세요." + "</h3>";
-            helper.setText(body, false);
+            helper.setText(body, true);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -57,12 +58,12 @@ public class UserService {
     }
 
     // 이메일 전송
-    public void sendMail(String mail) throws MessagingException {
+    public void sendMail(String email) throws MessagingException {
         String code = createNumber();
         // 인증번호 임시저장
-        codes.put(mail,code);
+        codes.put(email,code);
 
-        MimeMessage message = createMail(mail,code);
+        MimeMessage message = createMail(email,code);
         javaMailSender.send(message);
     }
 
@@ -77,6 +78,7 @@ public class UserService {
         String userId = requestDto.getUserId();
         String password = passwordEncoder.encode(requestDto.getPassword());
         String userName = requestDto.getUserName();
+        String email =requestDto.getEmail();
         UserStatus userStatus = UserStatus.MEMBER;
 
         // 회원 중복 확인
@@ -85,15 +87,9 @@ public class UserService {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
 
-        // email 중복확인
-        String email = requestDto.getEmail();
-        Optional<User> checkEmail = userRepository.findByEmail(email);
-        if (checkEmail.isPresent()) {
-            throw new IllegalArgumentException("중복된 Email 입니다.");
-        }
 
         // 사용자 등록
-        User user = new User(userId, password, userName, email, userStatus);
+        User user = new User(userId, password, userName, email ,userStatus);
         userRepository.save(user);
     }
 

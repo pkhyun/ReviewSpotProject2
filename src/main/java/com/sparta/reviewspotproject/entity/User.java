@@ -33,16 +33,16 @@ public class User {
     @Column(nullable = false)
     private String userName;
 
-    @Email
-    @Column
-    @NotNull
-    private String email;
 
     @Column
     private String tagLine;
 
     @Column
     private String refreshToken;
+
+    @Email(message = "유효한 이메일을 입력해주세요.")
+    @NotBlank(message = "Email을 입력해주세요.")
+    private String email;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)

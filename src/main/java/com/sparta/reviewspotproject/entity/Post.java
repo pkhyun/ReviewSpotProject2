@@ -48,7 +48,7 @@ public class Post extends Timestamped {
     private User user;
 
     @Column
-    private Integer likesCount;
+    private int likesCount;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;

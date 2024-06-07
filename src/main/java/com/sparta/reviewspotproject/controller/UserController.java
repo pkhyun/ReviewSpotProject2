@@ -29,13 +29,13 @@ public class UserController {
     private final JwtUtil jwtUtil;
 
     // 인증번호 발송
-    @PostMapping("/{mail}")
-    public ResponseEntity<Map<String, String>> sendMail(@PathVariable String mail) {
+    @PostMapping("/{email}")
+    public ResponseEntity<Map<String, String>> sendMail(@PathVariable("email") String email) {
         Map<String, String> result = new HashMap<>();
 
         try {
-           userService.sendMail(mail);
-           result.put("success", "인증 번호 발송");
+           userService.sendMail(email);
+           result.put("success", "인증 번호를 발송했습니다.");
         } catch (Exception e) {
             result.put("fail", "인증 번호 발송실패");
             result.put("Error", e.getMessage());
@@ -44,10 +44,10 @@ public class UserController {
     }
 
     // 인증번호 일치여부 확인
-    @GetMapping("/mail/verify")
-    public ResponseEntity<Boolean> checkCode(String email,String inputCode) {
-        boolean isMatch = userService.checkCode(email, inputCode);
-        return ResponseEntity.ok(isMatch);
+    @GetMapping("/{email}/{inputCode}")
+    public ResponseEntity<String> checkCode(@PathVariable String email,@PathVariable String inputCode) {
+        userService.checkCode(email, inputCode);
+        return ResponseEntity.ok("인증이 완료되었습니다.");
     }
 
     // 회원 가입
