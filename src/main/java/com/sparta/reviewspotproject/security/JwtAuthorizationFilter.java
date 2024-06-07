@@ -39,7 +39,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             String username = refreshTokenInfo.getSubject();
 
             if (!refreshToken.equals(userDetailsService.getRefreshToken(username))) {
-                throw new IllegalArgumentException("재로그인이 필요합니다.");
+                res.setContentType("application/json");
+                res.setCharacterEncoding("UTF-8");
+                try {
+                    res.getWriter().write("{\"message\": \"재로그인이 필요합니다.\"}");
+                    return;
+                } catch (IOException e) {
+                    log.error("Error writing to response: {}", e.getMessage());
+                }
             }
 
             if (!jwtUtil.validateAccessToken(tokenValue)) {
@@ -55,6 +62,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 try {
                     setAuthentication(info.getSubject());
                 } catch (Exception e) {
+                    res.setContentType("application/json");
+                    res.setCharacterEncoding("UTF-8");
+                    res.getWriter().write("{\"message\": \" " + e.getMessage() + "\"}");
                     log.error(e.getMessage());
                     return;
                 }
