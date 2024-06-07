@@ -50,6 +50,9 @@ public class Post extends Timestamped {
     @Column
     private Integer likesCount;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
     public Post(PostRequestDto postRequestDto) {
         this.contents = postRequestDto.getContents();
         this.title = postRequestDto.getTitle();
