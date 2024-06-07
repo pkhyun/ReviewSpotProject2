@@ -3,6 +3,8 @@ package com.sparta.reviewspotproject.entity;
 import com.sparta.reviewspotproject.dto.ProfileRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,7 +34,8 @@ public class User {
     private String userName;
 
     @Email
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private String email;
 
     @Column
@@ -65,7 +68,6 @@ public class User {
 
     public void update(ProfileRequestDto requestDto) {
         this.userName = requestDto.getUserName();
-        this.email = requestDto.getEmail();
         this.tagLine = requestDto.getTagLine();
     }
 }
