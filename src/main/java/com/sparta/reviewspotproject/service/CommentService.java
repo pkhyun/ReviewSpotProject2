@@ -29,7 +29,7 @@ public class CommentService {
 
     // 댓글 수정
     @Transactional
-    public CommentResponseDto updateComment(int id, CommentRequestDto requestDto, User user) {
+    public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto, User user) {
         Comment comment = findCommentById(id);
         if (comment.getUser().getId() == user.getId()) {
             comment.update(requestDto);
@@ -38,7 +38,7 @@ public class CommentService {
     }
 
     // 댓글 삭제
-    public ResponseEntity<String> deleteComment(int id, User user) {
+    public ResponseEntity<String> deleteComment(Long id, User user) {
         Comment comment = findCommentById(id);
         if (comment.getUser().getId() == user.getId()) {
             commentRepository.delete(comment);
@@ -47,7 +47,7 @@ public class CommentService {
     }
 
     // id 존재 확인 메서드
-    private Comment findCommentById(int id) {
+    private Comment findCommentById(Long id) {
         return commentRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글을 찾을 수 없습니다."));
     }

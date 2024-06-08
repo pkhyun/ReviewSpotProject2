@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int commentId;
+    private Long id;
 
     @Column(name = "contents", nullable = false)
     private String contents;
@@ -30,6 +30,9 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+
+    @Column
+    private int commentLikesCount;
 
     @CreatedDate
     @Column(updatable = false)
@@ -45,9 +48,8 @@ public class Comment {
         this.contents = requestDto.getContents();
         this.post = post;
         this.user = user;
+        this.commentLikesCount = 0;
     }
-
-
 
     public void update(CommentRequestDto requestDto){
         this.contents = requestDto.getContents();
