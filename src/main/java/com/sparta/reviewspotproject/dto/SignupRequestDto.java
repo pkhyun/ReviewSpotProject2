@@ -33,8 +33,7 @@ public class SignupRequestDto {
     private String email;
 
     @NotNull(message = "Email로 발송된 인증번호를 입력해주세요.")
-    private String certificationNumber;
-
+    private String verificationCode;
 
 }
 

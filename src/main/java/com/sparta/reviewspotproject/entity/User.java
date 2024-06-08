@@ -2,9 +2,6 @@ package com.sparta.reviewspotproject.entity;
 
 import com.sparta.reviewspotproject.dto.ProfileRequestDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,15 +30,13 @@ public class User {
     @Column(nullable = false)
     private String userName;
 
-
     @Column
     private String tagLine;
 
     @Column
     private String refreshToken;
 
-    @Email(message = "유효한 이메일을 입력해주세요.")
-    @NotBlank(message = "Email을 입력해주세요.")
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)

@@ -1,6 +1,8 @@
 package com.sparta.reviewspotproject.controller;
 
+import com.sparta.reviewspotproject.dto.EmailRequestDto;
 import com.sparta.reviewspotproject.dto.SignupRequestDto;
+import com.sparta.reviewspotproject.dto.VerifyCodeRequestDto;
 import com.sparta.reviewspotproject.entity.User;
 import com.sparta.reviewspotproject.jwt.JwtUtil;
 import com.sparta.reviewspotproject.security.UserDetailsImpl;
@@ -15,9 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -29,24 +29,16 @@ public class UserController {
     private final JwtUtil jwtUtil;
 
     // 인증번호 발송
-    @PostMapping("/{email}")
-    public ResponseEntity<Map<String, String>> sendMail(@PathVariable("email") String email) {
-        Map<String, String> result = new HashMap<>();
-
-        try {
-           userService.sendMail(email);
-           result.put("success", "인증 번호를 발송했습니다.");
-        } catch (Exception e) {
-            result.put("fail", "인증 번호 발송실패");
-            result.put("Error", e.getMessage());
-        }
-        return ResponseEntity.ok(result);
+    @PostMapping("/email")
+    public ResponseEntity<String> sendMail(@RequestBody @Valid EmailRequestDto requestDto) throws Exception {
+        userService.sendMail(requestDto);
+        return ResponseEntity.ok("인증번호 발송완료");
     }
 
     // 인증번호 일치여부 확인
-    @GetMapping("/{email}/{inputCode}")
-    public ResponseEntity<String> checkCode(@PathVariable String email,@PathVariable String inputCode) {
-        userService.checkCode(email, inputCode);
+    @GetMapping("/email/verify")
+    public ResponseEntity<String> checkCode(@RequestBody @Valid VerifyCodeRequestDto requestDto) {
+        userService.checkCode(requestDto);
         return ResponseEntity.ok("인증이 완료되었습니다.");
     }
 
@@ -55,7 +47,7 @@ public class UserController {
     public ResponseEntity<String> signup(@RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
         // Validation 예외처리
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        if(fieldErrors.size() > 0) {
+        if (fieldErrors.size() > 0) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
