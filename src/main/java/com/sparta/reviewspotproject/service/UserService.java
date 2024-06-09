@@ -28,7 +28,8 @@ public class UserService {
     private final JavaMailSender javaMailSender;
     private static final String senderEmail = "ReviewSpot@gmail.com";
     private static int code;
-    private final Map<String, String> codes = new HashMap<>();
+    private final Map<String, String> verificationCodes = new HashMap<>();
+    private final Map<String, Boolean> verificationStatus = new HashMap<>();
 
     // 인증번호 생성
     public static String createCode() {
@@ -61,20 +62,22 @@ public class UserService {
     public void sendMail(EmailRequestDto requestDto) throws MessagingException {
         String code = createCode();
         // 인증번호 임시저장
-        codes.put(requestDto.getEmail(), code);
-        MimeMessage message = createMail(requestDto.getEmail(), code);
+        verificationCodes.put(requestDto.getEmail(), code);
+        // 검증확인 여부 임시저장
+        verificationStatus.put(requestDto.getEmail(), false);
 
+        MimeMessage message = createMail(requestDto.getEmail(), code);
         javaMailSender.send(message);
     }
 
     // 인증번호 검증
-    public boolean checkCode(VerifyCodeRequestDto requestDto) {
+    public void checkCode(VerifyCodeRequestDto requestDto) {
         String email = requestDto.getEmail();
         String inputCode = requestDto.getVerificationCode();
-        String checkCode = codes.get(email);
+        String checkCode = verificationCodes.get(email);
 
-        if ((!checkCode.isEmpty()) && checkCode.equals(inputCode)) {
-            return true;
+        if (checkCode != null && checkCode.equals(inputCode)) {
+            verificationStatus.put(email, true);
         } else {
             throw new IllegalArgumentException("인증번호가 일치하지 않거나 만료된 인증번호 입니다.");
         }
@@ -86,8 +89,19 @@ public class UserService {
         String password = passwordEncoder.encode(requestDto.getPassword());
         String userName = requestDto.getUserName();
         String email = requestDto.getEmail();
-        String verificationCode = requestDto.getVerificationCode();
-        UserStatus userStatus = UserStatus.NOT_AUTH;
+
+        Optional<User> checkEmail = userRepository.findByEmail(email);
+        if (checkEmail.isPresent()) {
+            throw new IllegalArgumentException("중복된 Email 입니다.");
+        }
+
+        Boolean verified = verificationStatus.get(email);
+        UserStatus userStatus;
+        if (Boolean.TRUE.equals(verified) ) {
+            userStatus = UserStatus.MEMBER;
+        } else {
+            userStatus = UserStatus.NOT_AUTH;
+        }
 
         // 회원 중복 확인
         Optional<User> checkUsername = userRepository.findByUserId(userId);
@@ -95,20 +109,10 @@ public class UserService {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
 
-        // 이메일 중복 확인
-        Optional<User> checkEmail = userRepository.findByEmail(email);
-        if (checkEmail.isPresent()) {
-            throw new IllegalArgumentException("중복된 Email 입니다.");
-        }
-
-        // 이메일 인증 완료 시 회원가입
-        VerifyCodeRequestDto verifyCodeRequestDto = new VerifyCodeRequestDto(email, verificationCode);
-        if (checkCode(verifyCodeRequestDto)) {
-            userStatus = UserStatus.MEMBER;
-            User user = new User(userId, password, userName, email, userStatus);
-            userRepository.save(user);
-        }
+        User user = new User(userId, password, userName, email, userStatus);
+        userRepository.save(user);
     }
+
 
     // 회원 탈퇴
     public void setUserStatus(User user) {
@@ -122,6 +126,5 @@ public class UserService {
         user.setRefreshToken(null);
         userRepository.save(user);
     }
-
-
 }
+

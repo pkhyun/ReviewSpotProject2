@@ -58,6 +58,7 @@ public class UserController {
         return ResponseEntity.ok("회원가입이 성공적으로 완료되었습니다.");
     }
 
+
     // 로그아웃
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
