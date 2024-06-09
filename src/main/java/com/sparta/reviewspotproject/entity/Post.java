@@ -2,7 +2,6 @@ package com.sparta.reviewspotproject.entity;
 
 import com.sparta.reviewspotproject.dto.PostRequestDto;
 import com.sparta.reviewspotproject.dto.PostResponseDto;
-import com.sparta.reviewspotproject.repository.LikesRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -48,7 +44,7 @@ public class Post extends Timestamped {
     private User user;
 
     @Column
-    private int likesCount;
+    private int postLikesCount;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
@@ -62,7 +58,7 @@ public class Post extends Timestamped {
         this.contents = postRequestDto.getContents();
         this.title = postRequestDto.getTitle();
         this.user = user;
-        this.likesCount = 0;
+        this.postLikesCount = 0;
     }
 
     public void update(PostResponseDto postRequestDto, User user) {

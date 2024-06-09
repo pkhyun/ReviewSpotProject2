@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class Commentcontroller {
+public class CommentController {
 
     private final CommentService commentService;
 
@@ -30,7 +30,7 @@ public class Commentcontroller {
 
     // 선택 댓글 수정
     @PutMapping("/comment/{commentId}")
-    public CommentResponseDto updateComment(@PathVariable int commentId,
+    public CommentResponseDto updateComment(@PathVariable Long commentId,
                                             @Valid @RequestBody CommentRequestDto requestDto,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.updateComment(commentId, requestDto, userDetails.getUser());
@@ -38,7 +38,7 @@ public class Commentcontroller {
 
     // 선택 댓글 삭제
     @DeleteMapping("/comment/{commentId}")
-    public ResponseEntity<String> deleteComment(@PathVariable int commentId,
+    public ResponseEntity<String> deleteComment(@PathVariable Long commentId,
                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.deleteComment(commentId, userDetails.getUser());
     }

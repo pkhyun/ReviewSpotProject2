@@ -24,9 +24,9 @@ public class Likes extends Timestamped {
     @JoinColumn(name = "post_id")
     Post post;
 
-//    @ManyToOne
-//    @JoinColumn(name = "comment_id")
-//    Comment comment;
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
+    Comment comment;
 
     @Column(name = "content_type")
     @Enumerated(EnumType.STRING)
@@ -38,6 +38,10 @@ public class Likes extends Timestamped {
         this.contentType = contentType;
     }
 
-
+    public Likes(Comment comment, User user, ContentType contentType) {
+        this.comment = comment;
+        this.user = user;
+        this.contentType = contentType;
+    }
 
 }
