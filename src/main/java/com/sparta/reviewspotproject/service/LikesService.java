@@ -19,7 +19,7 @@ public class LikesService {
 
     // 게시물의 좋아요 기능
     @Transactional
-    public Integer likePost(Long postId, User user) {
+    public int likePost(Long postId, User user) {
         Post post = findPostId(postId);
 
         // 사용자가 게시물의 작성자인지 확인
@@ -38,7 +38,7 @@ public class LikesService {
 
     // 게시물의 좋아요 취소 기능
     @Transactional
-    public Integer unlikePost(Long postId, User user) {
+    public int unlikePost(Long postId, User user) {
         Post post = findPostId(postId);
 
         // 사용자가 게시물에 좋아요를 했는지 확인

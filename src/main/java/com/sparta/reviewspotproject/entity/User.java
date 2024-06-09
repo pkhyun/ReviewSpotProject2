@@ -2,7 +2,6 @@ package com.sparta.reviewspotproject.entity;
 
 import com.sparta.reviewspotproject.dto.ProfileRequestDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,15 +30,14 @@ public class User {
     @Column(nullable = false)
     private String userName;
 
-    @Email
-    @Column(nullable = false)
-    private String email;
-
     @Column
     private String tagLine;
 
     @Column
     private String refreshToken;
+
+    @Column(nullable = false)
+    private String email;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -65,7 +63,6 @@ public class User {
 
     public void update(ProfileRequestDto requestDto) {
         this.userName = requestDto.getUserName();
-        this.email = requestDto.getEmail();
         this.tagLine = requestDto.getTagLine();
     }
 }
