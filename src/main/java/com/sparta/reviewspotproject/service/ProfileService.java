@@ -1,5 +1,6 @@
 package com.sparta.reviewspotproject.service;
 
+import com.sparta.reviewspotproject.dto.PasswordRequestDto;
 import com.sparta.reviewspotproject.dto.ProfileRequestDto;
 import com.sparta.reviewspotproject.dto.ProfileResponseDto;
 import com.sparta.reviewspotproject.entity.User;
@@ -27,6 +28,13 @@ public class ProfileService {
     @Transactional
     public void updateProfile (ProfileRequestDto requestDto, User user) {
         User currentUser = findById(user);
+        currentUser.update(requestDto);
+    }
+
+    // 비밀번호 변경
+    @Transactional
+    public void updatePassword(PasswordRequestDto requestDto, User user) {
+        User currentUser = findById(user);
         String password = requestDto.getPassword();
         String changePassword = requestDto.getChangePassword();
 
@@ -41,7 +49,6 @@ public class ProfileService {
         }
         // 변경할 비밀번호로 수정
         currentUser.setPassword(passwordEncoder.encode(changePassword));
-        currentUser.update(requestDto);
     }
 
     private User findById(User user) {
@@ -50,13 +57,5 @@ public class ProfileService {
         );
     }
 
-    // 사용자 비밀번호 확인 (본인확인)
-//    @Transactional
-//    public void checkPassword(ProfileRequestDto requestDto, User user) {
-//        User currentUser = findById(user);
-//        String inputPassword = passwordEncoder.encode(requestDto.getPassword());
-//        if (!passwordEncoder.matches(inputPassword, user.getPassword())) {
-//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-//        }
-//    }
+
 }
