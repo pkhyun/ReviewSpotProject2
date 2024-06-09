@@ -1,5 +1,6 @@
 package com.sparta.reviewspotproject.entity;
 
+import com.sparta.reviewspotproject.dto.PasswordRequestDto;
 import com.sparta.reviewspotproject.dto.ProfileRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -65,4 +66,6 @@ public class User {
         this.userName = requestDto.getUserName();
         this.tagLine = requestDto.getTagLine();
     }
+
+
 }

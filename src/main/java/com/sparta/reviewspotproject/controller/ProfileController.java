@@ -1,5 +1,6 @@
 package com.sparta.reviewspotproject.controller;
 
+import com.sparta.reviewspotproject.dto.PasswordRequestDto;
 import com.sparta.reviewspotproject.dto.ProfileRequestDto;
 import com.sparta.reviewspotproject.dto.ProfileResponseDto;
 import com.sparta.reviewspotproject.security.UserDetailsImpl;
@@ -32,9 +33,12 @@ public class ProfileController {
         return new ResponseEntity<>("프로필이 성공적으로 수정되었습니다.", HttpStatus.OK);
     }
 
-    // 사용자의 비밀번호 확인(본인확인)
-//    @PostMapping("/profile")
-//    public ResponseEntity<String> checkPassword(@RequestBody @Valid ProfileRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        return new ResponseEntity<>("사용자 확인이 완료되었습니다.", HttpStatus.OK);
-//    }
+    // 비밀번호 변경
+    @PutMapping("/profile/password")
+    public ResponseEntity<String> updatePassword(@RequestBody @Valid PasswordRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        profileService.updatePassword(requestDto,userDetails.getUser());
+        return new ResponseEntity<>("비밀번호 변경이 완료되었습니다.", HttpStatus.OK);
+    }
+
+
 }
