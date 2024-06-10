@@ -78,7 +78,7 @@
 [API 명세서](https://www.notion.so/teamsparta/743348a021934b2481c666597fb4f9df?v=df96765736894f9e97dc7dc72ea49feb&pvs=4)
 
 ## 📈 ERD 다이어그램
-![image](https://github.com/pkhyun/ReviewSpotProject/assets/130989670/12d96c8a-ebc5-4bf7-8a0b-ceb7f3e3f510)
+[ERD다이어그램](https://www.notion.so/teamsparta/5-2b650ebf5b8748239194a293b514b60e?pvs=4#1133c31ac86c4fa684c5220af9f752dd)
 
 ## 🎇 트러블슈팅
 
