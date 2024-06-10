@@ -66,6 +66,13 @@
 </details>
 
 ## 💡 Git branch 사용
-[브랜치 활용](https://www.notion.so/ad70cad89d4942d780b0d8b85ddaf1d3?pvs=4#9f540c0a5b3d4627a8d0ada17656b28d)
+![브랜치 활용](https://velog.velcdn.com/images/hanni705/post/457debd9-4562-4a9b-b505-c05c1cc0d0f9/image.png)
+
+## ⚙ API 명세서
+[API 명세서](https://www.notion.so/teamsparta/743348a021934b2481c666597fb4f9df?v=df96765736894f9e97dc7dc72ea49feb&pvs=4)
+
+## 📈 ERD 다이어그램
+![image](https://github.com/pkhyun/ReviewSpotProject/assets/130989670/12d96c8a-ebc5-4bf7-8a0b-ceb7f3e3f510)
+
 
 
