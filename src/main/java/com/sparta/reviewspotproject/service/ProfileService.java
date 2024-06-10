@@ -56,6 +56,4 @@ public class ProfileService {
                 new IllegalArgumentException("해당 사용자는 존재하지 않습니다.")
         );
     }
-
-
 }

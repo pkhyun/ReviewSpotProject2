@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SignupRequestDto {
-
     @NotBlank(message = "사용자 ID을 입력해주세요")
     @Pattern(
             regexp = "^[a-zA-Z0-9]{10,20}$",
@@ -31,7 +30,5 @@ public class SignupRequestDto {
     @Email(message = "유효한 이메일을 입력해주세요.")
     @NotBlank(message = "Email을 입력해주세요.")
     private String email;
-
-
 }
 

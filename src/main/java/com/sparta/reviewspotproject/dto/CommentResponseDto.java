@@ -20,5 +20,4 @@ public class CommentResponseDto {
         this.modifiedAt = comment.getModifiedAt();
         this.commentLikesCount = comment.getCommentLikesCount();
     }
-
 }

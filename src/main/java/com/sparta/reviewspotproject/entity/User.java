@@ -1,6 +1,5 @@
 package com.sparta.reviewspotproject.entity;
 
-import com.sparta.reviewspotproject.dto.PasswordRequestDto;
 import com.sparta.reviewspotproject.dto.ProfileRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "user")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -66,6 +64,4 @@ public class User {
         this.userName = requestDto.getUserName();
         this.tagLine = requestDto.getTagLine();
     }
-
-
 }

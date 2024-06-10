@@ -113,7 +113,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-
     // 회원 탈퇴
     public void setUserStatus(User user) {
         user.setUserStatus(UserStatus.NON_MEMBER);

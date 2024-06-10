@@ -20,7 +20,6 @@ public class LikesService {
     @Transactional
     public int postLikePost(Long postId, User user) {
         Post post = findPostId(postId);
-
         // 사용자가 게시물의 작성자인지 확인
         if (post.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("자신의 게시물에 좋아요를 할 수 없습니다.");
@@ -39,11 +38,9 @@ public class LikesService {
     @Transactional
     public int postUnlikePost(Long postId, User user) {
         Post post = findPostId(postId);
-
         // 사용자가 게시물에 좋아요를 했는지 확인
         Likes like = likesRepository.findByPostIdAndUserId(postId, user.getId()).orElseThrow(() ->
                 new IllegalArgumentException("해당 게시물에 좋아요를 하지 않았습니다."));
-
         post.setPostLikesCount(post.getPostLikesCount() - 1);
         likesRepository.delete(like);
         return post.getPostLikesCount();
@@ -58,7 +55,6 @@ public class LikesService {
     @Transactional
     public int commentLikePost(Long commentId, User user) {
         Comment comment = findCommentId(commentId);
-
         // 사용자가 게시물의 작성자인지 확인
         if (comment.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("자신의 댓글에 좋아요를 할 수 없습니다.");
