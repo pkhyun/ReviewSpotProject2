@@ -11,12 +11,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 
 import java.io.IOException;
 
@@ -42,6 +41,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 unsuccessfulAuthentication(request, response, new BadCredentialsException("탈퇴한 회원입니다."));
                 return null;
             }
+            if (user != null && user.getUserStatus() == UserStatus.NOT_AUTH) {
+                unsuccessfulAuthentication(request, response, new CredentialsExpiredException("이메일 인증이 필요합니다."));
+                return null;
+            }
 
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -59,19 +62,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
         String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
-
         String token = jwtUtil.createToken(username); // 액세스 토큰 생성
         String refreshToken = jwtUtil.createRefreshToken(username); // 리프레시 토큰 생성
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token); // 액세스 토큰을 헤더에 추가
-
-        userDetailsService.updateRefreshToken(username,refreshToken);
+        userDetailsService.updateRefreshToken(username, refreshToken); // 리프레시 토큰 DB에 저장
 
         // 리프레시 토큰을 쿠키에 저장하여 클라이언트에 전달
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setMaxAge(12 * 60 * 60); // 리프레시 토큰의 유효 기간 설정 (초 단위)
         refreshTokenCookie.setPath("/"); // 쿠키 경로 설정
         response.addCookie(refreshTokenCookie); // 응답에 쿠키 추가
-
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -80,7 +80,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         } catch (IOException e) {
             log.error("Error writing to response: {}", e.getMessage());
         }
-
     }
 
     @Override
@@ -92,12 +91,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             if (failed instanceof BadCredentialsException) {
                 response.getWriter().write("{\"message\": \"탈퇴한 회원입니다.\"}");
-            }else {
+            } else if (failed instanceof CredentialsExpiredException) {
+                response.getWriter().write("{\"message\": \"이메일 인증이 필요합니다.\"}");
+            } else {
                 response.getWriter().write("{\"message\": \"로그인에 실패하였습니다.\"}");
             }
         } catch (IOException e) {
             log.error("Error writing to response: {}", e.getMessage());
         }
     }
-
 }

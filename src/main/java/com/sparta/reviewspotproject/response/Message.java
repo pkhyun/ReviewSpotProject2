@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 
 @NoArgsConstructor
 public class Message {
-
     private int statusCode;
     private String message;
 
