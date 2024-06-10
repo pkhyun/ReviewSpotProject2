@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -57,4 +60,16 @@ public class CommentService {
         return postRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 스케줄을 찾을 수 없습니다."));
     }
+
+    // 댓글 전체조회
+    public List<CommentResponseDto> getAllComment(Long postId) {
+        Post post = findPostById(postId);
+        List<Comment> commentList = post.getComments();
+        List<CommentResponseDto> responseDtoList = new ArrayList<>();
+        for (Comment responseDto : commentList) {
+            responseDtoList.add(new CommentResponseDto(responseDto));
+        }
+        return responseDtoList;
+    }
+
 }
