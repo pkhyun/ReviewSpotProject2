@@ -1,7 +1,6 @@
 package com.sparta.reviewspotproject.entity;
 
 import com.sparta.reviewspotproject.dto.PostRequestDto;
-import com.sparta.reviewspotproject.dto.PostResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,6 @@ import java.util.List;
 @Table(name = "post")
 @NoArgsConstructor
 public class Post extends Timestamped {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -61,11 +59,9 @@ public class Post extends Timestamped {
         this.postLikesCount = 0;
     }
 
-    public void update(PostResponseDto postRequestDto, User user) {
+    public void update(PostRequestDto postRequestDto, User user) {
         this.title = postRequestDto.getTitle();
         this.contents = postRequestDto.getContents();
         this.user = user;
     }
-
-
 }

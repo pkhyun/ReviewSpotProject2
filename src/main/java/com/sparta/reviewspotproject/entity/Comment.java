@@ -55,6 +55,5 @@ public class Comment {
         this.contents = requestDto.getContents();
         this.modifiedAt = LocalDateTime.now();
     }
-
 }
 

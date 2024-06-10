@@ -43,5 +43,4 @@ public class Likes extends Timestamped {
         this.user = user;
         this.contentType = contentType;
     }
-
 }

@@ -43,7 +43,8 @@ public class CommentController {
         return commentService.deleteComment(commentId, userDetails.getUser());
     }
 
-    @ExceptionHandler // 유효성 검사 에러 핸들링
+    // 유효성 검사 에러 핸들링
+    @ExceptionHandler
     private ResponseEntity<String> handleException(MethodArgumentNotValidException e) {
         return new ResponseEntity<>(e.getBindingResult().getFieldError().getDefaultMessage(), HttpStatus.BAD_REQUEST);
     }

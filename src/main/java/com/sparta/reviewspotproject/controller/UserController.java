@@ -44,7 +44,8 @@ public class UserController {
 
     // 회원 가입
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
+    public ResponseEntity<String> signup(@RequestBody @Valid SignupRequestDto requestDto,
+                                         BindingResult bindingResult) {
         // Validation 예외처리
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         if (fieldErrors.size() > 0) {
@@ -54,7 +55,6 @@ public class UserController {
             return new ResponseEntity<>("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
         }
         userService.signup(requestDto);
-
         return ResponseEntity.ok("회원가입이 성공적으로 완료되었습니다.");
     }
 
@@ -75,7 +75,8 @@ public class UserController {
         return ResponseEntity.ok("성공적으로 탈퇴 되었습니다.");
     }
 
-    @ExceptionHandler // 에러 핸들링
+    // 에러 핸들링
+    @ExceptionHandler
     private ResponseEntity<String> handleException(IllegalArgumentException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }

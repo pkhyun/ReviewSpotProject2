@@ -10,5 +10,4 @@ public enum ContentType {
     COMMENT("댓글");
 
     private final String contentType;
-
 }
