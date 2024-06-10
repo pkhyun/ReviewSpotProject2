@@ -65,6 +65,10 @@
   <br>
 </details>
 
+## 🎈 와이어프레임
+[와이어프레임](https://www.notion.so/teamsparta/5-2b650ebf5b8748239194a293b514b60e?pvs=4#265166efb66146d09ccb77de41c2a885)
+
+
 ## 💡 Git branch 사용
 ![브랜치 활용](https://velog.velcdn.com/images/hanni705/post/457debd9-4562-4a9b-b505-c05c1cc0d0f9/image.png)
 
@@ -73,6 +77,11 @@
 
 ## 📈 ERD 다이어그램
 ![image](https://github.com/pkhyun/ReviewSpotProject/assets/130989670/12d96c8a-ebc5-4bf7-8a0b-ceb7f3e3f510)
+
+## 🎇 트러블슈팅
+
+## 🎉 회고
+
 
 
 
