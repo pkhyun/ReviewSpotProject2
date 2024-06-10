@@ -72,7 +72,7 @@
 
 
 ## 💡 Git branch 사용
-![브랜치 활용](https://velog.velcdn.com/images/hanni705/post/457debd9-4562-4a9b-b505-c05c1cc0d0f9/image.png)
+[브랜치 활용]([https://velog.velcdn.com/images/hanni705/post/457debd9-4562-4a9b-b505-c05c1cc0d0f9/image.png](https://www.notion.so/teamsparta/5-2b650ebf5b8748239194a293b514b60e?pvs=4#8047fe09524949d28af7203b102e5ce0))
 
 ## ⚙ API 명세서
 [API 명세서](https://www.notion.so/teamsparta/743348a021934b2481c666597fb4f9df?v=df96765736894f9e97dc7dc72ea49feb&pvs=4)
