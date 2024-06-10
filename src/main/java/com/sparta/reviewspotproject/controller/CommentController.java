@@ -13,6 +13,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -41,6 +43,11 @@ public class CommentController {
     public ResponseEntity<String> deleteComment(@PathVariable Long commentId,
                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.deleteComment(commentId, userDetails.getUser());
+    }
+
+    @GetMapping("/comments/{postId}")
+    public List<CommentResponseDto> getAllComment(@PathVariable Long postId) {
+        return commentService.getAllComment(postId);
     }
 
     // 유효성 검사 에러 핸들링
