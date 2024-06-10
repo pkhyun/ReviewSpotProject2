@@ -51,7 +51,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             if (!jwtUtil.validateAccessToken(tokenValue)) {
                 // 토큰이 만료된 경우 리프레시 토큰을 사용하여 새로운 액세스 토큰을 발급
-
                 String newAccessToken = jwtUtil.createToken(username);
                 res.addHeader(JwtUtil.AUTHORIZATION_HEADER, newAccessToken); // 새로운 액세스 토큰을 헤더에 추가
                 log.info("새로 발행한 액세스 토큰: {}", newAccessToken);
@@ -70,7 +69,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 }
             }
         }
-
         filterChain.doFilter(req, res);
     }
 
@@ -80,7 +78,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = createAuthentication(username);
         context.setAuthentication(authentication);
-
         SecurityContextHolder.setContext(context);
     }
 
