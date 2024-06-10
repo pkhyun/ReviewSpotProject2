@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "comment")
 @NoArgsConstructor
-public class Comment {
+public class Comment extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,16 +34,6 @@ public class Comment {
     @Column
     private int commentLikesCount;
 
-    @CreatedDate
-    @Column(updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @LastModifiedDate
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime modifiedAt = LocalDateTime.now();
-
     public Comment(CommentRequestDto requestDto, Post post, User user){
         this.contents = requestDto.getContents();
         this.post = post;
@@ -53,7 +43,6 @@ public class Comment {
 
     public void update(CommentRequestDto requestDto){
         this.contents = requestDto.getContents();
-        this.modifiedAt = LocalDateTime.now();
     }
 }
 

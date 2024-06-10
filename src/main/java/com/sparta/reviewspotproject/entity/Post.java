@@ -27,16 +27,6 @@ public class Post extends Timestamped {
     @Column(nullable = false,unique = false)
     private String contents;
 
-    @CreatedDate
-    @Column(updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @LastModifiedDate
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime modifiedAt = LocalDateTime.now();
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

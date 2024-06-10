@@ -76,7 +76,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         try {
-            response.getWriter().write("{\"message\": \"로그인에 성공하였습니다.\"}");
+            response.getWriter().write("{\"message\": \"로그인에 성공적으로 완료되었습니다.\"}");
         } catch (IOException e) {
             log.error("Error writing to response: {}", e.getMessage());
         }
@@ -85,7 +85,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
         log.error("Authentication failed: {}", failed.getMessage());
-        response.setStatus(401);
+        response.setStatus(400);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         try {

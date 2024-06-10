@@ -64,7 +64,7 @@ public class UserController {
     public ResponseEntity<String> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         userService.setNullRefreshToken(user);
-        return ResponseEntity.ok("로그아웃 되었습니다.");
+        return ResponseEntity.ok("로그아웃이 성공적으로 완료되었습니다.");
     }
 
     // 회원 탈퇴
