@@ -45,6 +45,7 @@ public class CommentController {
         return commentService.deleteComment(commentId, userDetails.getUser());
     }
 
+    // 선택한 게시물의 댓글들 조회
     @GetMapping("/comments/{postId}")
     public List<CommentResponseDto> getAllComment(@PathVariable Long postId) {
         return commentService.getAllComment(postId);

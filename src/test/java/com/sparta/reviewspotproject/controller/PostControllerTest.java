@@ -175,7 +175,7 @@ class PostControllerTest {
         String requestBody = objectMapper.writeValueAsString(requestDto);
 
         // When & Then
-        mvc.perform(put("/api/posts" + postId)
+        mvc.perform(put("/api/posts/" + postId)
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -193,7 +193,7 @@ class PostControllerTest {
         this.mockUserSetup();
 
         // When & Then
-        mvc.perform(delete("/api/posts" + postId)
+        mvc.perform(delete("/api/posts/" + postId)
                         .principal(mockPrincipal)
                 )
                 .andExpect(status().isOk())
