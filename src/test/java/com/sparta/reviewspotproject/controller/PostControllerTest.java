@@ -193,7 +193,7 @@ class PostControllerTest {
         this.mockUserSetup();
 
         // When & Then
-        mvc.perform(put("/api/posts" + postId)
+        mvc.perform(delete("/api/posts" + postId)
                         .principal(mockPrincipal)
                 )
                 .andExpect(status().isOk())
